@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:avaino"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         Title="Avaino v1.0" Height="450" Width="800">
     <Grid>
-        
+        <avalonEdit:TextEditor
+            Grid.Row="1"
+			Name="textEditor"
+			FontFamily="Consolas"
+			FontSize="10pt"
+			SyntaxHighlighting="C++"
+            ShowLineNumbers="True"/>
     </Grid>
 </Window>
