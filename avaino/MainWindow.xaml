@@ -9,6 +9,11 @@
         mc:Ignorable="d"
         Title="Avaino v1.0" Height="450" Width="800">
     <Grid>
-        <sn:ScintillaWPF Name="Scintilla" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Transparent"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <sn:ScintillaWPF Grid.Row="1" Name="Scintilla" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Transparent"/>
+        <Button  Grid.Row="0" x:Name="FormatButton" Content="Format" Click="FormatButton_Click"/>
     </Grid>
 </Window>
