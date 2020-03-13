@@ -1,6 +1,7 @@
 ﻿using ScintillaNET;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,24 @@ namespace avaino
         public MainWindow()
         {
             InitializeComponent();
+            ConfigureScintilla();
+        }
+                                 
+        private void Format()
+        {
+            var content = Scintilla.Text;
+            
+        }
 
+
+
+        public static System.Drawing.Color IntToColor(int rgb)
+        {
+            return System.Drawing.Color.FromArgb(255, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+        }
+
+        private void ConfigureScintilla()
+        {
             Scintilla.BorderStyle = System.Windows.Forms.BorderStyle.None;
 
             // Configure the default style
@@ -41,9 +59,9 @@ namespace avaino
             Scintilla.Margins[0].BackColor = IntToColor(0x212121);
             Scintilla.Styles[ScintillaNET.Style.LineNumber].ForeColor = IntToColor(0x495161);
             Scintilla.Styles[ScintillaNET.Style.LineNumber].BackColor = IntToColor(0x282C34);
-            Scintilla.CaretForeColor = Color.FromArgb(255,255,255,255);
+            Scintilla.CaretForeColor = Color.FromArgb(255, 255, 255, 255);
             var c = IntToColor(0x3E4451);
-            Scintilla.SetSelectionBackColor(true, Color.FromArgb(c.A,c.R,c.G,c.B));
+            Scintilla.SetSelectionBackColor(true, Color.FromArgb(c.A, c.R, c.G, c.B));
             Scintilla.SelectionEolFilled = true;
             Scintilla.IndentationGuides = IndentView.LookBoth;
             // Configure the CPP (C#) lexer styles
@@ -76,11 +94,6 @@ namespace avaino
 
             Scintilla.SetKeywords(0, "class extends implements import interface new case do while else if for in switch throw get set function var try catch finally while with default break continue delete return each const namespace package include use is as instanceof typeof author copy default deprecated eventType example exampleText exception haxe inheritDoc internal link mtasc mxmlc param private return see serial serialData serialField since throws usage version langversion playerversion productversion dynamic private public partial static intrinsic internal native override protected AS3 final super this arguments null Infinity NaN undefined true false abstract as base bool break by byte case catch char checked class const continue decimal default delegate do double descending explicit event extern else enum false finally fixed float for foreach from goto group if implicit in int interface internal into is lock long new null namespace object operator out override orderby params private protected public readonly ref return switch struct sbyte sealed short sizeof stackalloc static string select this throw true try typeof uint ulong unchecked unsafe ushort using var virtual volatile void while where yield");
             Scintilla.SetKeywords(1, "void Null ArgumentError arguments Array Boolean Class Date DefinitionError Error EvalError Function int Math Namespace Number Object RangeError ReferenceError RegExp SecurityError String SyntaxError TypeError uint XML XMLList Boolean Byte Char DateTime Decimal Double Int16 Int32 Int64 IntPtr SByte Single UInt16 UInt32 UInt64 UIntPtr Void Path File System Windows Forms ScintillaNET ICACHE_RAM_ATTR Serial");
-        }
-
-        public static System.Drawing.Color IntToColor(int rgb)
-        {
-            return System.Drawing.Color.FromArgb(255, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
         }
     }
 }
