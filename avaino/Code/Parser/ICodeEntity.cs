@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace avaino.Parser
+namespace avaino.Code.Parser
 {
-    public class ClassDef
+    public interface ICodeEntity
     {
-        public string Name { get; set; }
-
+        string Name { get; set; }
     }
 }

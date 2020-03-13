@@ -1,4 +1,6 @@
-﻿using ScintillaNET;
+﻿using avaino.Code;
+using avaino.Code.Parser;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,24 +24,30 @@ namespace avaino
     /// </summary>
     public partial class MainWindow : Window
     {
-        // System library locations for arduino:
-        // D:\Software\Arduino\libraries\**\*.h
-        // D:\Software\Arduino\hardware\tools\**\*.h
-        // C:\Users\~\Documents\Arduino\libraries\**\*.h
-        // C:\Users\~\AppData\Local\Arduino15\packages\**\*.h
+        private LibraryFinder finder;
+        private Parser parser;
 
         public MainWindow()
         {
             InitializeComponent();
             ConfigureScintilla();
+
+            finder = new LibraryFinder(@"D:\Software\Arduino");
+            parser = new Parser(finder);
+
             LoadFile(@"E:\GitHub Repositories\twometer-iot\Library\TwometerIoT.h");
         }
 
         private void LoadFile(string file)
         {
             Scintilla.Text = File.ReadAllText(file);
-            Parser.Parser.FindClasses(Scintilla.Text);
-            Scintilla.SetKeywords(3, "WiFiController DeviceDescriptor ESP8266WebServer Property vector ModeProperty String TwometerIoT");
+            var entities = parser.FindDeclaredEntities(Scintilla.Text);
+            var sb = new StringBuilder();
+            foreach (var entity in entities)
+                if (entity is ClassDef)
+                    sb.Append(entity.Name).Append(" ");
+
+            Scintilla.SetKeywords(3, sb.ToString());
         }
 
         private void Format()
