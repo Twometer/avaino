@@ -22,10 +22,24 @@ namespace avaino
     /// </summary>
     public partial class MainWindow : Window
     {
+        // System library locations for arduino:
+        // D:\Software\Arduino\libraries\**\*.h
+        // D:\Software\Arduino\hardware\tools\**\*.h
+        // C:\Users\~\Documents\Arduino\libraries\**\*.h
+        // C:\Users\~\AppData\Local\Arduino15\packages\**\*.h
+
         public MainWindow()
         {
             InitializeComponent();
             ConfigureScintilla();
+            LoadFile(@"E:\GitHub Repositories\twometer-iot\Library\TwometerIoT.h");
+        }
+
+        private void LoadFile(string file)
+        {
+            Scintilla.Text = File.ReadAllText(file);
+            Parser.Parser.FindClasses(Scintilla.Text);
+            Scintilla.SetKeywords(3, "WiFiController DeviceDescriptor ESP8266WebServer Property vector ModeProperty String TwometerIoT");
         }
 
         private void Format()
@@ -106,8 +120,8 @@ namespace avaino
 
             Scintilla.Lexer = Lexer.Cpp;
 
-            Scintilla.SetKeywords(0, "class extends implements import interface new case do while else if for in switch throw get set function var try catch finally while with default break continue delete return each const namespace package include use is as instanceof typeof author copy default deprecated eventType example exampleText exception haxe inheritDoc internal link mtasc mxmlc param private return see serial serialData serialField since throws usage version langversion playerversion productversion dynamic private public partial static intrinsic internal native override protected AS3 final super this arguments null Infinity NaN undefined true false abstract as base bool break by byte case catch char checked class const continue decimal default delegate do double descending explicit event extern else enum false finally fixed float for foreach from goto group if implicit in int interface internal into is lock long new null namespace object operator out override orderby params private protected public readonly ref return switch struct sbyte sealed short sizeof stackalloc static string select this throw true try typeof uint ulong unchecked unsafe ushort using var virtual volatile void while where yield");
-            Scintilla.SetKeywords(1, "void Null ArgumentError arguments Array Boolean Class Date DefinitionError Error EvalError Function int Math Namespace Number Object RangeError ReferenceError RegExp SecurityError String SyntaxError TypeError uint XML XMLList Boolean Byte Char DateTime Decimal Double Int16 Int32 Int64 IntPtr SByte Single UInt16 UInt32 UInt64 UIntPtr Void Path File System Windows Forms ScintillaNET ICACHE_RAM_ATTR Serial");
+            Scintilla.SetKeywords(0, "class extends implements import interface new case do while else if for in switch throw get set function var try catch finally while with default break continue delete return each const namespace package include use is as instanceof typeof author copy default deprecated eventType example exampleText exception haxe inheritDoc internal link mtasc mxmlc param private return see serial serialData serialField since throws usage version langversion playerversion productversion dynamic private public partial static intrinsic internal native override protected AS3 final super this arguments null Infinity NaN undefined true false abstract as base bool break by byte case catch char checked class const continue decimal default delegate do double descending explicit event extern else enum false finally fixed float for foreach from goto group if implicit in int interface internal into is lock long new null namespace object operator out override orderby params private protected public readonly ref return switch struct sbyte sealed short sizeof stackalloc static string select this throw true try typeof uint ulong unchecked unsafe ushort using var virtual volatile void while where yield unsigned");
+            Scintilla.SetKeywords(1, "ICACHE_RAM_ATTR JSON_OBJECT_SIZE HEX HTTP_GET PROPERTY_MODE PROPERTY_REGULAR");
         }
 
         private void FormatButton_Click(object sender, RoutedEventArgs e)
