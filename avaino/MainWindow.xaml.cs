@@ -33,7 +33,7 @@ namespace avaino
             InitializeComponent();
             ConfigureScintilla();
 
-            finder = new LibraryFinder(@"D:\Software\Arduino");
+            finder = new LibraryFinder(@"D:\Software\Arduino", @"E:\GitHub Repositories\twometer-iot\Library");
             parser = new Parser(finder);
 
             LoadFile(@"E:\GitHub Repositories\twometer-iot\Library\TwometerIoT.h");

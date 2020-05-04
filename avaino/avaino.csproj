@@ -73,6 +73,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Code\Parser\ICodeEntity.cs" />
+    <Compile Include="Code\Parser\PreprocessorDef.cs" />
+    <Compile Include="Code\Parser\StructDef.cs" />
+    <Compile Include="Code\Parser\Typedef.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

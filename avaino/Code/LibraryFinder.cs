@@ -9,18 +9,19 @@ namespace avaino.Code
 {
     public class LibraryFinder
     {
-        private IEnumerable<string> searchPaths;
+        private IEnumerable<string> systemSearchPaths;
 
         private IEnumerable<string> libraries;
 
-        public LibraryFinder(string arduinoInstallPath)
+        public LibraryFinder(string arduinoInstallPath, string projectPath)
         {
             var list = new List<string>();
             list.Add(Path.Combine(arduinoInstallPath, "libraries"));
             list.Add(Path.Combine(arduinoInstallPath, "hardware\\tools"));
             list.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Arduino\\libraries"));
             list.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Arduino15\\packages"));
-            searchPaths = list;
+            list.Add(projectPath);
+            systemSearchPaths = list;
         }
 
         public string FindLibrary(string name)
@@ -34,8 +35,8 @@ namespace avaino.Code
 
         public void RefreshIndex()
         {
-            var list = new List<string>();
-            foreach (var searchPath in searchPaths)
+            var list = new HashSet<string>();
+            foreach (var searchPath in systemSearchPaths)
             {
                 var di = new DirectoryInfo(searchPath);
                 foreach(var lib in di.EnumerateFiles("*.h", SearchOption.AllDirectories))
