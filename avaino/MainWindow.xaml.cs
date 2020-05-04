@@ -3,6 +3,7 @@ using avaino.Code.Parser;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,13 +42,15 @@ namespace avaino
         private void LoadFile(string file)
         {
             Scintilla.Text = File.ReadAllText(file);
-            var entities = parser.FindDeclaredEntities(Scintilla.Text);
+            var entities = parser.FindDeclaredEntities(Scintilla.Text, new List<string>());
             var sb = new StringBuilder();
             foreach (var entity in entities)
                 if (entity is ClassDef)
                     sb.Append(entity.Name).Append(" ");
 
-            Scintilla.SetKeywords(3, sb.ToString());
+            Debug.WriteLine($"Keywords: {sb}");
+
+            Scintilla.SetKeywords(1, sb.ToString());
         }
 
         private void Format()

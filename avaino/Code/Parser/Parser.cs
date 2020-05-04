@@ -16,7 +16,7 @@ namespace avaino.Code.Parser
             this.libraryFinder = libraryFinder;
         }
 
-        public IEnumerable<ICodeEntity> FindDeclaredEntities(string content, bool library = false)
+        public IEnumerable<ICodeEntity> FindDeclaredEntities(string content, List<string> scanned)
         {
             var entities = new List<ICodeEntity>();
             var reader = new StringReader(content);
@@ -24,14 +24,18 @@ namespace avaino.Code.Parser
             while (reader.Peek() >= 0)
             {
                 var line = reader.ReadLine().Trim();
-                if (line.StartsWith("#include") && !library)
+                if (line.StartsWith("#include"))
                 {
                     var libName = FindBetween(line, "<", ">");
                     if (libName == null) continue;
                     var libPath = libraryFinder.FindLibrary(libName);
-                    if (libPath == null) continue;
+                    if (libPath == null)
+                        continue;
+                    if (scanned.Contains(libPath))
+                        continue;
+                    scanned.Add(libPath);
                     var libData = File.ReadAllText(libPath);
-                    entities.AddRange(FindDeclaredEntities(libData, true));
+                    entities.AddRange(FindDeclaredEntities(libData, scanned));
                 }
                 else
                 {
@@ -50,10 +54,16 @@ namespace avaino.Code.Parser
             int idx;
             while ((idx = line.IndexOf("class")) != -1)
             {
-                var data = FindBetween(line, "class", "{") ?? FindBetween(line, "class", ";");
-                line = line.Substring(idx + "class".Length);
+                var data = FindBetween(line, "class", "{") ?? FindBetween(line, "class", ";"); // Get data
+                line = line.Substring(idx + "class".Length); // Move to next
+
                 if (data == null)
                     continue;
+
+                data = data.Trim(':'); // Drop namespace indicators
+                if (data.Contains(":"))  // Remove all inheritances
+                    data = data.Remove(data.IndexOf(':')).Trim();
+
                 entities.Add(new ClassDef(data.Trim()));
             }
             if (entities.Count == 0) return null;
